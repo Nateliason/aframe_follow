@@ -1,0 +1,48 @@
+<head>
+  <meta charset="utf-8">
+  <title>Follow Component - A-Frame</title>
+  <meta name="description" content="A follow component for A-Frame">
+  <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
+
+  <script>
+
+    AFRAME.registerComponent('follow', {
+      schema: {
+        distance: {type: 'vec3'},
+        target: {type: 'selector'}
+      },
+
+      tick() {
+        const targetItem = this.data.target;
+        var distance = this.data.distance;
+        var targetPosition = targetItem.getAttribute('position');
+        this.el.setAttribute('position',{
+          x: targetPosition.x + distance.x,
+          y: targetPosition.y + distance.y,
+          z: targetPosition.z + distance.z
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <a-scene>
+    <a-sphere position="0 0 3" scale=".5 .5 .5" color="#000000" follow="target: #character; distance: 3 3 -6"></a-sphere>
+
+    <a-entity id="character" position="0 2 3"  wasd-controls look-controls>
+      <a-entity id="camera" camera>
+        <a-ring radius-outer="0.03" radius-inner="0.02"
+          position="0 0 -1"
+          material="color: cyan; shader: flat"
+          cursor="fuse: true; fuseTimeout: 500">
+        </a-ring>
+      </a-camera>
+    </a-entity>
+    
+    <a-box id="test" position="3 2 4" scale=".3 .3 .3" color="#FFFFFF"></a-box>
+
+    <a-sky color="#6ca6cd"></a-sky>
+    <a-light type="directional" color="#FFF" intensity=".7" position="-1 1 2"></a-light>
+    <a-light type="ambient" color="#FFF"></a-light>
+  </a-scene>
+</body>  
